@@ -1,7 +1,12 @@
 package de.mpicbg.scf.rhaase.fiji.ij2course.scijavaservices;
 
+import java.util.HashMap;
 import java.util.Set;
-import net.imagej.ImageJ;
+import net.imagej.ImageJService;
+import org.scijava.plugin.AbstractPTService;
+import org.scijava.plugin.Plugin;
+import org.scijava.plugin.PluginInfo;
+import org.scijava.service.Service;
 
 /**
  * Author: Robert Haase, Scientific Computing Facility, MPI-CBG Dresden,
@@ -33,36 +38,41 @@ import net.imagej.ImageJ;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-public class Zoo {
-    private ImageJ ij;
+@Plugin(type = Service.class)
+public class AnimalService extends AbstractPTService<Animal> implements ImageJService {
 
-    private AnimalService animalService;
+    private HashMap<String, PluginInfo<Animal>> animals = new HashMap<>();
 
-
-
-    public Zoo() {
-        ij = new ImageJ();
-
-        animalService = ij.get(AnimalService.class);
-
-    }
-
-    public void visit() {
-        final Set<String> names = animalService.getAnimalNames();
-        ij.log().info("Total number of animals: " + names.size());
-
-        // Print out a little more information about each animal.
-        for (final String name : animalService.getAnimalNames()) {
-            // Create a new instance of this animal.
-            final Animal animal = animalService.createAnimal(name);
-
-            ij.log().info("A " + name + " makes \"" + animal.getTypicalSound() + "\"");
+    @Override
+    public void initialize() {
+        for (final PluginInfo<Animal> info : getPlugins()) {
+            String name = info.getName();
+            if (name == null || name.isEmpty()) {
+                name = info.getClassName();
+            }
+            animals.put(name, info);
         }
     }
 
 
+    public Set<String> getAnimalNames() {
+        return animals.keySet();
+    }
 
-    public static void main(String... args) {
-        new Zoo().visit();
+    public Animal createAnimal(final String name) {
+        final PluginInfo<Animal> info = animals.get(name);
+
+        if (info == null) {
+            throw new IllegalArgumentException("No animal of that name");
+        }
+
+        final Animal animal = pluginService().createInstance(info);
+
+        return animal;
+    }
+
+    @Override
+    public Class<Animal> getPluginType() {
+        return Animal.class;
     }
 }
