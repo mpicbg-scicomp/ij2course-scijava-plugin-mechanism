@@ -51,6 +51,6 @@ public class Zoo {
 
 
     public static void main(String... args) {
-        new Zoo().visit()
+        new Zoo().visit();
     }
 }
