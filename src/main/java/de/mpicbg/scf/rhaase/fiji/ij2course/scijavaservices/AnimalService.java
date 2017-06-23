@@ -2,7 +2,6 @@ package de.mpicbg.scf.rhaase.fiji.ij2course.scijavaservices;
 
 import java.util.HashMap;
 import java.util.Set;
-import net.imagej.ImageJService;
 import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Plugin;
 import org.scijava.plugin.PluginInfo;
@@ -39,7 +38,7 @@ import org.scijava.service.Service;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 @Plugin(type = Service.class)
-public class AnimalService extends AbstractPTService<Animal> implements ImageJService {
+public class AnimalService extends AbstractPTService<Animal> implements Service {
 
     private HashMap<String, PluginInfo<Animal>> animals = new HashMap<>();
 

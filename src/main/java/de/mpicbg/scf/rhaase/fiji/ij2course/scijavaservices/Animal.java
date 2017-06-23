@@ -1,7 +1,7 @@
 package de.mpicbg.scf.rhaase.fiji.ij2course.scijavaservices;
 
 
-import net.imagej.ImageJPlugin;
+import org.scijava.plugin.SciJavaPlugin;
 
 /**
  * Author: Robert Haase, Scientific Computing Facility, MPI-CBG Dresden,
@@ -33,6 +33,6 @@ import net.imagej.ImageJPlugin;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-public interface Animal extends ImageJPlugin {
+public interface Animal extends SciJavaPlugin {
     String getTypicalSound();
 }

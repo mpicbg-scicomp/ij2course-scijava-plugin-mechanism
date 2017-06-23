@@ -1,7 +1,7 @@
 package de.mpicbg.scf.rhaase.fiji.ij2course.scijavaservices;
 
 import java.util.Set;
-import net.imagej.ImageJ;
+import org.scijava.Context;
 
 /**
  * Author: Robert Haase, Scientific Computing Facility, MPI-CBG Dresden,
@@ -34,29 +34,29 @@ import net.imagej.ImageJ;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 public class Zoo {
-    private ImageJ ij;
+    private Context ctx;
 
     private AnimalService animalService;
 
 
 
     public Zoo() {
-        ij = new ImageJ();
+        ctx = new Context(AnimalService.class);
 
-        animalService = ij.get(AnimalService.class);
+        animalService = ctx.getService(AnimalService.class);
 
     }
 
     public void visit() {
         final Set<String> names = animalService.getAnimalNames();
-        ij.log().info("Total number of animals: " + names.size());
+        System.out.println("Total number of animals: " + names.size());
 
         // Print out a little more information about each animal.
         for (final String name : animalService.getAnimalNames()) {
             // Create a new instance of this animal.
             final Animal animal = animalService.createAnimal(name);
 
-            ij.log().info("A " + name + " makes \"" + animal.getTypicalSound() + "\"");
+            System.out.println("A " + name + " makes \"" + animal.getTypicalSound() + "\"");
         }
     }
 
